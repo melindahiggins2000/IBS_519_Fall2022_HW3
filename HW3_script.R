@@ -113,7 +113,7 @@ abalone_cleaned <- abalone %>%
 
 
 
-# PROBLEM 10 ==================================
+# BONUS PROBLEM ==================================
 # get summary statistics for
 # the 4 weight measurements:
 #   - wholeWeight
@@ -122,7 +122,14 @@ abalone_cleaned <- abalone %>%
 #   - shellWeight
 # grouped by sex
 # HINT: See class example for the 3
-# dimensional measurements
+#   dimensional measurements
+# HINT: Use either dplyr summarise() with group_by()
+#   or the tapply() approach
+#   or load purrr package and use split() and map()
+
+
+
+
 
 
 

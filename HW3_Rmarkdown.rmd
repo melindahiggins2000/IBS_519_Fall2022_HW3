@@ -25,6 +25,7 @@ library(printr)
 library(readr)
 library(dplyr)
 library(ggplot2)
+library(purrr)
 
 # load abalone dataset
 abalone <- read_csv("abalone.csv")
@@ -121,25 +122,25 @@ Add your code from Homework 3 below to show how to check and identify any of the
 * visceraWeight > wholeWeight
 * shellWeight > wholeWeight
 
-### Identify the abalones with shuckedWeight > wholeWeight
+### TASK 1: Identify the abalones with shuckedWeight > wholeWeight
 
 ```{r}
 # PUT YOUR CODE HERE
 ```
 
-### Identify the abalones with visceraWeight > wholeWeight
+### TASK 2: Identify the abalones with visceraWeight > wholeWeight
 
 ```{r}
 # PUT YOUR CODE HERE
 ```
 
-### Identify the abalones with shellWeight > wholeWeight
+### TASK 3: Identify the abalones with shellWeight > wholeWeight
 
 ```{r}
 # PUT YOUR CODE HERE
 ```
 
-### Show the abalones that have shuckedWeight > wholeWeight
+### TASK 4: Show the abalones that have shuckedWeight > wholeWeight
 
 Make a plot below similar to the one above that shows the abalones with shuckedWeight > wholeWeight. Any abalones above the reference line have illogical weights. And the colors are also shown by sex to identify the sex of the abalones with the illogical shuckedWeight.
 
@@ -147,9 +148,11 @@ Make a plot below similar to the one above that shows the abalones with shuckedW
 # PUT YOUR CODE HERE
 ```
 
+### TASK 5: Write description here
+
 WRITE A FEW SENTENCES HERE ON WHAT YOU SEE IN THE PLOT FOR WHICH SEX ABALONES HAVE THESE OUTLIERS. WHY DO YOU THINK THESE ABALONES HAD ILLOGICAL VALUES?
 
-## Summary statistics of cleaned dataset
+## TASK 6: Summary statistics of cleaned dataset
 
 ```{r}
 # PUT YOUR CODE HERE TO GET CLEANED DATASET
@@ -175,7 +178,7 @@ abalone_cleaned %>%
   map(summary)
 ```
 
-### Summary statistics of the 4 Weight Measurements by Sex
+### TASK 7: Summary statistics of the 4 Weight Measurements by Sex
 
 ```{r}
 # This approach uses the purrr package
