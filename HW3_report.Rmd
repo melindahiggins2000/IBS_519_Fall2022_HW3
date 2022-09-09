@@ -1,0 +1,303 @@
+---
+title: "IBS 519 Homework 3 Report"
+author: "Firstname Lastname"
+date: "2022-09-07"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+**REMEMBER** Change your name and date in the YAML header above.
+
+_NOTE: You only need to put in code or type in text to complete the 8 TASKS and 1 BONUS TASK below. Leave everything else as is._
+
+```{r setup, include=FALSE}
+# knitr options to set up
+# show code in report
+knitr::opts_chunk$set(echo = TRUE)
+
+# if errors, keep knitting
+knitr::opts_chunk$set(error = TRUE)
+
+# hide messages and warnings
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+# load printr package for nicer
+# table output formatting
+library(printr)
+
+# load packages needed
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(purrr)
+
+# load abalone dataset
+abalone <- read_csv("abalone.csv")
+
+# add age variable
+abalone <- abalone %>%
+  mutate(age = rings + 1.5)
+```
+
+## Data cleaning - dimensional measurements
+
+Previously in class, we reviewed the 3 dimensional measurements of the abalones. We know from the documentation provided at the data source at [https://archive.ics.uci.edu/ml/datasets/abalone](https://archive.ics.uci.edu/ml/datasets/abalone), that length should be the longest dimension and should be > height and > diameter.
+
+This code will list the id's of the abalones with any issues - including any with illogical values (such as height = 0).
+
+### Summary Statistics of dimensional measurements
+
+In the summary stats reported below, you'll notice there are some abalones with height = 0.
+
+```{r}
+# code from in class examples
+abalone %>%
+  select(length, diameter, height) %>%
+  summary()
+```
+
+### Identify the abalones with height = 0
+
+```{r}
+abalone %>%
+  filter(height == 0) %>%
+  select(id, length, diameter, height)
+```
+
+### Identify the abalones with height > length
+
+```{r}
+abalone %>%
+  filter(height > length) %>%
+  select(id, length, diameter, height)
+```
+
+### Identify the abalones with diameter > length
+
+```{r}
+abalone %>%
+  filter(diameter > length) %>%
+  select(id, length, diameter, height)
+```
+
+### Visualize the abalone with height > length
+
+From the plot below, we can see any abalones above the reference line that have height > length and using color for each sex, we can also note which sex has this illogical measurement.
+
+The abalone with height > length is a F, female.
+
+There is also a M, male, with a large height relative to its length (even though its height is < its length), and it's height is quite a bit larger than the other abalone heights.
+
+```{r}
+ggplot(abalone, aes(length, height)) +
+  geom_point(aes(color = sex)) +
+  geom_abline(intercept = 0,
+              slope = 1,
+              color = "blue")
+```
+
+### Other possible outliers for height
+
+The histogram below shows 2 abalones with larger heights than the rest. One of these abalones is the abalone with height > length. The other abalone is just large with values that are possible but will have higher leverage in future analyses.
+
+```{r}
+ggplot(abalone, aes(height)) + 
+  geom_histogram(aes(y=..density..), 
+                 binwidth=.02,
+                 colour="black", fill="white") +
+  geom_density(alpha=.2, fill="#FF6666")
+```
+
+### Show the abalones with the largest heights
+
+The table below shows the abalones with the top 10 largest heights.
+
+```{r}
+# add slice_head() function to specify number
+# of rows to show
+abalone %>% 
+  select(id, sex, length, diameter, height) %>%
+  arrange(desc(height)) %>%
+  slice_head(n = 10)
+```
+
+## Data cleaning - weight measurements
+
+Add your code from Homework 3 below to show how to check and identify any of the abalones with illogical weight measurements. As noted in the documentation, wholeWeight should be the largest weight, so check to see if any abalones have:
+
+* shuckedWeight > wholeWeight
+* visceraWeight > wholeWeight
+* shellWeight > wholeWeight
+
+### TASK 1: Identify the abalones with shuckedWeight > wholeWeight
+
+For TASK 1: write code to find out if any of the abalones have shuckedWeight > wholeWeight. If so, find out how many and get the ids of these abalones.
+
+```{r}
+# PUT YOUR CODE HERE
+
+
+```
+
+### TASK 2: Identify the abalones with visceraWeight > wholeWeight
+
+For TASK 2: write code to find out if any of the abalones have visceraWeight > wholeWeight. If so, find out how many and get the ids of these abalones.
+
+```{r}
+# PUT YOUR CODE HERE
+
+
+```
+
+### TASK 3: Identify the abalones with shellWeight > wholeWeight
+
+For TASK 3: write code to find out if any of the abalones have shellWeight > wholeWeight. If so, find out how many and get the ids of these abalones.
+
+```{r}
+# PUT YOUR CODE HERE
+
+
+```
+
+### TASK 4: Show the abalones that have shuckedWeight > wholeWeight
+
+Make a plot below similar to the one above that shows the abalones with shuckedWeight > wholeWeight. Any abalones above the reference line have illogical weights. And the colors are also shown by sex to identify the sex of the abalones with the illogical shuckedWeight.
+
+```{r}
+# PUT YOUR CODE HERE
+
+
+```
+
+### TASK 5: Write description here
+
+Looking at the plot you just made above, for TASK 5, write a few sentences here on what you see in the plot above for which sex abalones have these outliers (where shuckedWeight > wholeWeight). Why do you suppose these abalones had  illogical values (just your thoughts, no right or wrong answer)?
+
+...INSERT YOUR ANSWER HERE...
+
+## TASK 6: Final cleaned dataset
+
+Using codes I provided above and the ones you just completed above to help, replace the 3 underscores ___ in the code provided below to add 3 more filter steps to finish cleaning up all of the abalone dataset issues for any abalones with the other 3 weight measurement issues (i.e. if any of the shuckedWeight, visceraWeight or shellWeights were greater than wholeWeight, which is incorrect).
+
+I've already provided the code we did in class to clean up the length, height and diameter dimensional measurements. The first 3 filter() steps KEEP the abalones that had height > 0, and had diameters and heights <= length.
+
+You just need to add the code below to "KEEP" the abalones that had CORRECT weights (i.e. who had shuckedWeight, visceraWeight and shellWeight <= wholeWeight).
+
+```{r}
+# PUT YOUR CODE HERE TO GET CLEANED DATASET
+# REPLACE THE ___ WITH YOUR CODE
+abalone_cleaned <- abalone %>%
+  filter(height > 0) %>%         
+  filter(diameter <= length) %>% 
+  filter(height <= length) %>%
+  filter(___) %>%
+  filter(___) %>%
+  filter(___)
+
+# check dimensions of final cleaned dataset.
+abalone_cleaned %>%
+  dim()
+```
+
+NOTE: Your abalone_cleaned dataset should have removed 8 abalones and now have 4177 - 8 = 4169 rows.
+
+Now that we've cleaned up the dataset, let's get the summary statistics for the various measurements on these abalones by sex.
+
+### Histogram of height (we did in class)
+
+Remember in class that we used some special syntax to get an overlaid density plot on top of the histogram for height, by using the y=..density.. option for the aes() in the geom_histogram() function in ggplot2. You can learn more about this method and get code examples at:
+
+* R Graphics Cookbook by Winston Chang [https://r-graphics.org/](https://r-graphics.org/)
+* OR also see [http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/](http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/)
+
+We also changed the bars of the histogram using:
+
+* binwidth (the width of the bars in the histogram) = 0.02
+* colour = "black" for the outline of the bars
+* fill = "white" for the color inside the bars
+
+And we also changed the settings for the geom_density() with:
+
+* alpha=0.2 for the color transparency of the overlaid color and
+* we set fill="#FF6666", which was a pinkish-coral color for the overlaid density curve filled in.
+  
+Reminder: you can get HEX CODES and see the colors at [https://www.color-hex.com/color/ff6666](https://www.color-hex.com/color/ff6666).
+
+```{r}
+# make histogram with overlaid density curve
+ggplot(abalone_cleaned, aes(height)) + 
+  geom_histogram(aes(y=..density..), 
+                 binwidth=.02,
+                 colour="black", fill="white") +
+  geom_density(alpha=.2, fill="#FF6666")  
+```
+
+### TASK 7: Make Histogram of Age
+
+For TASK 7: See the code example above. But now make a histogram for the age of the abalones in the cleaned dataset.
+
+For geom_histogram(), 
+
+* set binwidth = 1
+* set colour = "black"
+* fill = "yellow"
+
+Add a density curve, using geom_density(),
+
+* set alpha = 0.2,
+* set fill = "#8e7cc3"
+
+See this color at [https://www.color-hex.com/color/8e7cc3](https://www.color-hex.com/color/8e7cc3). 
+
+
+```{r}
+# PUT YOUR CODE HERE
+
+
+```
+
+### Summary statistics of the 3 Dimensional Measurements by Sex
+
+We did this example in class, but I'm including the code again for quick reference. We used the split() and map() functions from the purrr package to get the summary statistics for the 3 dimension variables (length, diameter and height) by the sex group.
+
+```{r}
+# This approach uses the purrr package
+library(purrr)
+abalone_cleaned %>%
+  select(sex, length, diameter, height) %>%
+  split(.$sex) %>%
+  map(summary)
+```
+
+### TASK 8: Summary statistics of the 4 Weight Measurements by Sex
+
+For TASK 8, use the split() and map() functions from the purrr package to get the summary statistics for the 4 weight variables (wholeWeight, shuckedWeight, visceraWeight and shellWeight) by the sex group.
+
+```{r}
+# REPLACE THE ___ with your code
+# This approach uses the purrr package
+library(purrr)
+abalone_cleaned %>%
+  select(sex, ___, ___, ___, ___) %>%
+  split(.$sex) %>%
+  map(summary)
+```
+
+### BONUS TASK: Summary statistics of age and number of rings by Sex - with standard deviation added
+
+Remember in class that we saw that while useful, the summary() base R function does not include the stadnard deviation as part of the summary statistics provided. However, we did do a few other examples of how to get the standard deviation using either:
+
+* the dplyr::summarise() function to compute say sd_age = sd(age) and then these can be combined with the group_by() step to get the statistics by sex group;
+* or instead of summary() we also tried using either the Hmisc::describe() or psych::describe() functions with the purrr split() and map() like we just did above.
+
+For this BONUS TASK, pick one of these approaches to get the summary statistics INCLUDING THE STANDARD DEVIATION for both the rings and age variables by the sex group.
+
+```{r}
+# PUT YOUR CODE HERE
+
+
+```
+
+

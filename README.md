@@ -2,8 +2,8 @@
 
 ## Homework 3
 
-1. Open HW3_script.R file
-2. Using the code examples we did in class, write code to solve the 9 Problems and 1 BONUS question.
+1. Open HW3_report.Rmd file
+2. Using the code examples we did in class, write code to solve the 8 TASKS and 1 BONUS TASK.
 
 
 
